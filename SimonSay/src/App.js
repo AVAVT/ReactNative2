@@ -8,6 +8,8 @@ import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 
 import ColorButton from "./ColorButton";
+import GamePlay from "./containers/GamePlay";
+import StyleDemo from "./containers/StyleDemo";
 
 // Component
 // Props
@@ -26,8 +28,12 @@ const Text2 = props => (
 // Class component
 export default class App extends Component {
   state = {
-    colors: ["red", "green", "blue", "yellow"]
+    colors: ["red", "green", "blue", "yellow"],
+    answers: [],
+    isPlaying: true
   };
+
+  // Single source of truth
 
   componentDidMount() {
     this._createRandomRequirement();
@@ -37,18 +43,14 @@ export default class App extends Component {
     this.setState({
       requirement: Array.from({ length: 4 }).map(i =>
         Math.floor(Math.random() * 4)
-      )
+      ),
+      answers: []
     });
 
   _onButtonPressed = id => {
-    this.setState(
-      {
-        buttonId: id
-      },
-      () => {
-        console.log(this.state.buttonId);
-      }
-    );
+    id == this.state.requirement[this.state.answers.length]
+      ? this.setState({ answers: this.state.answers.concat(id) })
+      : this._createRandomRequirement();
   };
 
   render() {
@@ -61,31 +63,6 @@ export default class App extends Component {
       />
     ));
 
-    return (
-      <View style={styles.container}>
-        <Text>{this.state.requirement}</Text>
-        <Text>{this.state.buttonId}</Text>
-        {buttons}
-      </View>
-    );
+    return this.state.isPlaying ? <GamePlay /> : <GameOver />;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  }
-});
