@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Button,
-  Dimensions
+  Dimensions,
+  Animated
 } from "react-native";
 
 import ColorButton from "../components/ColorButton";
@@ -14,18 +15,38 @@ class GamePlay extends Component {
   state = {
     colors: ["red", "green", "blue", "yellow"],
     requirement: [],
-    answers: []
+    answers: [],
+    opacity: [
+      new Animated.Value(1),
+      new Animated.Value(1),
+      new Animated.Value(1),
+      new Animated.Value(1)
+    ]
   };
 
   componentDidMount() {
     this._increaseDifficulty();
   }
 
-  _increaseDifficulty = () =>
-    this.setState({
-      requirement: this.state.requirement.concat(Math.floor(Math.random() * 4)),
-      answers: []
-    });
+  _increaseDifficulty = () => {
+    this.setState(
+      {
+        requirement: this.state.requirement.concat(
+          Math.floor(Math.random() * 4)
+        ),
+        answers: []
+      },
+      () => {
+        Animated.timing(
+          this.state.opacity[this.state.requirement[0]],
+          {
+            toValue: 0,
+            duration: 1000
+          }
+        ).start();
+      }
+    );
+  };
 
   _onButtonPressed = id => {
     id === this.state.requirement[this.state.answers.length]
@@ -46,6 +67,7 @@ class GamePlay extends Component {
         onButtonPressed={this._onButtonPressed}
         id={index}
         bgColor={color}
+        opacity={this.state.opacity[index]}
       />
     ));
     const { width, height } = Dimensions.get("window");

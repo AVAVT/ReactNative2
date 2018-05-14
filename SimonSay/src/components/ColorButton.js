@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Animated
 } from "react-native";
 
 class ColorButton extends Component {
@@ -16,9 +17,15 @@ class ColorButton extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this._onPress} style={styles.container}>
-        <View
-          style={[styles.button, { backgroundColor: this.props.bgColor }]}
+      <TouchableOpacity onPress={this._onPress} style={[styles.container]}>
+        <Animated.View
+          style={[
+            styles.button,
+            {
+              backgroundColor: this.props.bgColor,
+              opacity: this.props.opacity
+            }
+          ]}
         />
       </TouchableOpacity>
     );
