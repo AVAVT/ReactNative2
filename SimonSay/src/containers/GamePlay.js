@@ -17,24 +17,26 @@ class GamePlay extends Component {
     answers: []
   };
 
-  // Single source of truth
-
   componentDidMount() {
-    this._createRandomRequirement();
+    this._increaseDifficulty();
   }
 
-  _createRandomRequirement = () =>
+  _increaseDifficulty = () =>
     this.setState({
-      requirement: Array.from({ length: 4 }).map(i =>
-        Math.floor(Math.random() * 4)
-      ),
+      requirement: this.state.requirement.concat(Math.floor(Math.random() * 4)),
       answers: []
     });
 
   _onButtonPressed = id => {
-    id == this.state.requirement[this.state.answers.length]
-      ? this.setState({ answers: this.state.answers.concat(id) })
-      : this._createRandomRequirement();
+    id === this.state.requirement[this.state.answers.length]
+      ? this._progress(this.state.answers.concat(id))
+      : this.props.onGameOver(this.state.requirement.length - 1);
+  };
+
+  _progress = answers => {
+    answers.length === this.state.requirement.length
+      ? this._increaseDifficulty()
+      : this.setState({ answers });
   };
 
   render() {

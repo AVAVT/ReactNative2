@@ -8,6 +8,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import GamePlay from "./containers/GamePlay";
+import GameOver from "./containers/GameOver";
 import StyleDemo from "./containers/StyleDemo";
 
 // Component
@@ -30,7 +31,19 @@ export default class App extends Component {
     isPlaying: true
   };
 
+  _onGameOver = score =>
+    this.setState({
+      isPlaying: false,
+      score
+    });
+
+  _onReplay = () => this.setState({ isPlaying: true });
+
   render() {
-    return this.state.isPlaying ? <GamePlay /> : <GameOver />;
+    return this.state.isPlaying ? (
+      <GamePlay onGameOver={this._onGameOver} />
+    ) : (
+      <GameOver score={this.state.score} onReplay={this._onReplay} />
+    );
   }
 }
