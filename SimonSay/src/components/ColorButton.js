@@ -17,7 +17,11 @@ class ColorButton extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this._onPress} style={[styles.container]}>
+      <TouchableOpacity
+        disabled={this.props.disabled}
+        onPress={this._onPress}
+        style={[styles.container]}
+      >
         <Animated.View
           style={[
             styles.button,

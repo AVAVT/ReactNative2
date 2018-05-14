@@ -21,7 +21,8 @@ class GamePlay extends Component {
       new Animated.Value(1),
       new Animated.Value(1),
       new Animated.Value(1)
-    ]
+    ],
+    buttonsDisabled: false
   };
 
   componentDidMount() {
@@ -34,18 +35,29 @@ class GamePlay extends Component {
         requirement: this.state.requirement.concat(
           Math.floor(Math.random() * 4)
         ),
-        answers: []
+        answers: [],
+        buttonsDisabled: true
       },
       () => {
-        Animated.timing(
-          this.state.opacity[this.state.requirement[0]],
-          {
-            toValue: 0,
-            duration: 1000
-          }
-        ).start();
+        this._flashButton(0);
       }
     );
+  };
+
+  _flashButton = index => {
+    index < this.state.requirement.length
+      ? Animated.sequence([
+          Animated.timing(this.state.opacity[this.state.requirement[index]], {
+            toValue: 0,
+            duration: 250
+          }),
+          Animated.delay(500),
+          Animated.timing(this.state.opacity[this.state.requirement[index]], {
+            toValue: 1,
+            duration: 250
+          })
+        ]).start(() => this._flashButton(index + 1))
+      : this.setState({ buttonsDisabled: false });
   };
 
   _onButtonPressed = id => {
@@ -68,14 +80,17 @@ class GamePlay extends Component {
         id={index}
         bgColor={color}
         opacity={this.state.opacity[index]}
+        disabled={this.state.buttonsDisabled}
       />
     ));
+
     const { width, height } = Dimensions.get("window");
 
     return (
       <View style={styles.container}>
-        <Text>Score: {this.state.requirement.length - 1}</Text>
-        <Text>{this.state.requirement}</Text>
+        <Text style={styles.title}>
+          Score: {this.state.requirement.length - 1}
+        </Text>
         <View
           style={[
             styles.gameBoard,
@@ -98,6 +113,9 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS == "ios" ? 20 : 0,
     justifyContent: "center",
     alignItems: "center"
+  },
+  title: {
+    fontSize: 36
   },
   gameBoard: {
     flexDirection: "row",
