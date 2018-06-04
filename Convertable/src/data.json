@@ -25,6 +25,27 @@
           "ratio": 0.001
         }
       ]
+    },
+    {
+      "id": 1,
+      "name": "Weight",
+      "units": [
+        {
+          "id": 0,
+          "name": "Kilogram",
+          "ratio": 1
+        },
+        {
+          "id": 1,
+          "name": "Gram",
+          "ratio": 0.001
+        },
+        {
+          "id": 3,
+          "name": "Tonne",
+          "ratio": 1000
+        }
+      ]
     }
   ]
 }

@@ -53,10 +53,8 @@ class UnitColumn extends PureComponent {
   render() {
     return (
       <View style={commonStyles.wrapper}>
-        <UnitInput
+        <UnitInput 
           unit={this.props.unitList[this.state.currentUnitIndex]}
-          baseValue={this.props.baseValue}
-          onChangeBaseValue={this.props.onChangeBaseValue}
         />
 
         <FlatList

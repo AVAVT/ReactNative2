@@ -4,11 +4,7 @@ import { textDefault, commonStyles } from "../theme";
 import UnitColumn from "../components/UnitColumn";
 
 class ConvertScreen extends PureComponent {
-  state = {
-    baseValue: 0
-  };
-
-  _onChangeBaseValue = value => this.setState({ baseValue: value });
+  state = {};
 
   render() {
     return (
@@ -20,14 +16,8 @@ class ConvertScreen extends PureComponent {
           }
         ]}
       >
-        <UnitColumn
-          baseValue={this.state.baseValue}
-          onChangeBaseValue={this._onChangeBaseValue}
-        />
-        <UnitColumn
-          baseValue={this.state.baseValue}
-          onChangeBaseValue={this._onChangeBaseValue}
-        />
+        <UnitColumn />
+        <UnitColumn />
       </View>
     );
   }
