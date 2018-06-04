@@ -17,11 +17,10 @@ import {
 } from "../theme";
 import UnitInput from "./UnitInput";
 
-import data from "../data.json";
+import { connect } from "react-redux";
 
 class UnitColumn extends PureComponent {
   state = {
-    units: data.categories[0].units,
     currentUnitIndex: 0
   };
 
@@ -55,13 +54,13 @@ class UnitColumn extends PureComponent {
     return (
       <View style={commonStyles.wrapper}>
         <UnitInput
-          unit={this.state.units[this.state.currentUnitIndex]}
+          unit={this.props.unitList[this.state.currentUnitIndex]}
           baseValue={this.props.baseValue}
           onChangeBaseValue={this.props.onChangeBaseValue}
         />
 
         <FlatList
-          data={this.state.units}
+          data={this.props.unitList}
           extraData={this.state.currentUnitIndex}
           renderItem={this._renderUnitItem}
           keyExtractor={this._unitKeyExtractor}
@@ -71,4 +70,13 @@ class UnitColumn extends PureComponent {
   }
 }
 
-export default UnitColumn;
+// const mapAppStateToProps = appState => {
+//   return { unitList: appState.unitList };
+// };
+
+const mapAppStateToProps = ({ unitList }) => ({ unitList });
+
+export default connect(mapAppStateToProps)(UnitColumn);
+
+// const addor = a => b => a + b;
+// addor(a)(b);
